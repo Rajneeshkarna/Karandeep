@@ -1,0 +1,26 @@
+name: Code Formatting
+
+on:
+  pull_request:
+    branches: [main] # Adjust the branch name as needed
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Install dependencies
+        run: npm install # Adjust for your language/tool
+    
+      - name: Format code with Prettier
+        run: npm run format # Adjust for your language/tool command
+
+      - name: Commit formatted code
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-format code" && git push origin ${{ github.ref }}
